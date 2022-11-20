@@ -1,80 +1,57 @@
-# backend_Auth_Ciclo4AGrupo3Equipo1
-## Backend Java SpringBoot
+# backend project
+## Backend with Java SpringBoot
 
-### Para administrar Roles
-- GET **servidor/rol**: Muestra los roles creados, id, nombre y descripcion
-- GET **servidor/rol/{id_rol}**: Muestra el rol con id = id_rol, su id, nombre y descripcion
-- DELETE **servidor/rol?_id={_id que se va a eliminar}**: borra el rol segun su id, debe existir
-    *Cuando se borre un rol, los usuarios que lo tenian toman el rol "ciudadano"
-    NO SE PUEDE BORRAR EL ROL CIUDADANO, esto provoca que el rol de los ciudadanos pase a null y no tengan permisos, 
-    por ende se restringio*
-- PUT **servidor/rol**: Se debe enviar un JSON con los datos:
-  - _id
-  - nombre
-  - descripcion 
+This project manages users, roles and access permissions to different url and methods
 
-  *Si el _id no existe, reporta el error*
+### Managing Roles
+
+- GET **server/role**: shows all created roles, with name and description
+- DELETE **server/role?idRole=<idRole>**: eliminates role according to its id
+    *There should be a role to which every user with the deleted roled will take as its new role. This one
+    is set to "undefined" and cannot be deleted*
+- PUT **server/role**: a JSON must be sent with the whole data:
+  {"idRole": "<idRole>", "name": "Role Name", "description": "Role description"}
+
+- POST **server/role**: a JSON must be sent with the following data:
+  {"name": "Role Name", "description": "Role description"}
+  *idRole is automatically created*
+
+- GET **server/role/<idRole>**: Muestra el role con id = <idRole>, su id, nombre y descripcion
   
-- POST **servidor/rol**: Se debe enviar un JSON con los datos:
-  - nombre
-  - descripcion
-  
-  *Si el rol ya existe, reporta el error*
-  *El _id se crea automaticamente*
-  
-### Para administrar Permisos
-*Permisos es una tabla que establece cual metodo CRUD está disponible. En teoría debe haber 4 metodos para cada endpoint
-El metodo se almacena en MAYUSCULA y en descripcion, la URI completa del servicio*
+### Managing accesses
+*Access is a collection that gathers all urls and methods for every endpoint
+*The method must be entered in uppercase letters, <METHOD> = {"POST","PUT","PATCH","GET","DELETE"}
 
-- GET **servidor/permiso**: Muestra los permisos creados, id, metodo y la ruta
-- DELETE **servidor/permiso?id={_id_permiso a borrar}**: borra el permiso segun su id, debe existir
-    - Cuando se borre un permiso, los usuarios no podran acceder DE NINGUNA MANERA al metodo eliminado
-    - SE RECOMIENDA NO BORRAR, en vez de esto, es mejor editar su informacion 
-- PUT **servidor/permiso**: Se debe enviar un JSON con los datos:
-    - _id
-    - metodo
-    - ruta
-
-  *Si el _id no existe, reporta el error*
-  - POST **servidor/permiso**: Se debe enviar un JSON con los datos:
-      - metodo
-      - ruta
-
-  *El _id se crea automaticamente*
+- GET **server/access**: shows all created accesses, with url and method
+- DELETE **server/access?idAccess=<idAccess>**: eliminates the access according to its id
+- PUT **server/access**: a JSON must be sent with the whole data:
+  {  "idAccess": "<idAccess>",  "url": "<url>",  "method": "METHOD"  } 
+- POST **server/access**: a JSON must be sent with the following data:
+  { "url":"<url>", "method":"<METHOD>"}
+*idAccess is automatically created*
   
-### Para administrar Rol/Permisos
-*Rol/Permisos es una tabla intermedia que asigna un permiso de acceso a un rol especifico,
-por ejemplo, existe un rol ciudadano que NO puede eliminar usuarios, pero hay un administrador que si puede.
-entonces un campo en esta tabla tendra el id_rol del administrador y el id_permiso del endpoint (DELETE **servidor/usuario**)
 
-- GET **servidor/rolPermiso**: Muestra los id_permiso asignados a un id_rol
-- GET **servidor/rolPermiso/{id_rolpermiso}**: Muestra el rolpermiso con id = id_rolpermiso, su id, el rol y permiso asociados
-- DELETE **servidor/rolPermiso/{id}**: borra el rol/permiso segun su id, debe existir
-  - Cuando se borre un rol/permiso, los usuarios con un rol especifico no podran acceder al metodo eliminado
-  - SE RECOMIENDA NO BORRAR, en vez de esto, es mejor editar su informacion
-- PUT **servidor/rolPermiso/{id}/rol/{_id_rol}/permiso/{_id_permiso}**: a un rol/permiso se le pueden cambiar el rol al que habilita y el permiso que autoriza. Todos los datos van en la URI, NO SERA IMPLEMENTADO EN FRONTEND, SOLO POR URL
-  *Si el id de alguna de las entidades (rol o permiso) no existe, reporta el error*
-- POST **servidor/rolPermiso/{_id_rol}/permiso/{_id_permiso}**: Los datos van en la URI del servicio
+### Managing access to roles
+*AccessToRole assigns an access (url and method) to a Role, giving permission to do the query
 
-  *El id se crea automaticamente*
+- GET **server/accessToRole**: shows the accesses to every role
+- GET **server/accessToRole/<idAccessToRole>**: shows the information of the specific <idAccessToRole>
+- DELETE **server/accessToRole/<idAccessToRole>**: eliminates the accessToRole according to its id
+  PUT **server/accessToRole/<id>/role/<idRole>/access/<idAccess>**: changes the access for the role   
+- POST **server/accessToRole/<idRole>/access/<idAccess>**: sets an access for a role
+  *idAtoR is automatically created*
   
-### Para administrar Usuarios
-Usuario es toda aquella persona que va a usar el sistema: administrador (registador), jurado o ciudadano
-Por defecto, los usuarios se crean con rol ciudadano y es el admin quien asigna roles diferentes
+### Managing users
 
-- GET **servidor/usuario**: Muestra los usuarios creados, cedula (@id), nombre de usuario (correo electronico), 
-  contrasena (cifrado SHA256) y el rol que tiene asignado
-- DELETE **servidor/usuario?cedula={cedula de usuario que se quiere borrar}**: borra el usuario segun su cedula, debe existir
-  - SE RECOMIENDA NO BORRAR, en vez de esto, es mejor editar su informacion
-- PATCH **servidor/usuario**: debe enviarse un json con la informacion actualizada:
-    - contrasena (sin cifrar)
-  
-  *Si la cedula del usuario no existe, reporta el error*
-- POST **servidor/usuario/**: Los datos van en un JSON, los necesarios son:
-  - cedula (entero sin puntos ni comas)
-  - usuario (correo electronico)
-  - contrasena (no cifrada)
-  
-  *Si la cedula del usuario ya existe, reporta el error*
-  *El id no se crea automaticamente, es la cedula del usuario sin comas ni puntos*
-- PUT **servidor/usuario?cedula={cedulausuario}&id_rol={rol que se va a asignar}**: cambia el rol de un usuario,segun su cedula, y el id_rol destino
+Users are created with a default role named "undefined".
+
+- GET **server/user**: shows all created users with the encrypted password (SHA256)and the assigned role
+- DELETE **server/user?id=<id>**:  eliminates the user according to its id
+- POST & PATCH **server/user**: a JSON must be sent with the whole data:
+  {   "id": "<user id>",  "lastname": "<user lastname>",  "name": "<user first name>",
+    "email": "<user email>",  "address": "<user address>", "phone": "<user phone number>",
+    "username": "<username>",  "password": "<not encrypted password>" }
+
+  *id is not automatically created*
+
+- PUT **server/user/<id>/idRole/<idRole>**: changes the role of the user
