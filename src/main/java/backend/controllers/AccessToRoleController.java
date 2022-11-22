@@ -46,29 +46,28 @@ public class AccessToRoleController {
     public AccessToRole create(@RequestParam String idRole, @RequestParam String idAccess){
         return this.setAccessToRole(idRole,idAccess,new AccessToRole(),"create");
     }
-
+    /*
     @PutMapping()
     public AccessToRole update(@RequestBody AccessToRole updateAtoR) {
         //Check if the AtoR exists
         AccessToRole currentAtoR = this.myAccessToRoleRepo.findById(updateAtoR.getIdAtoR()).orElse(null);
-        if (currentAtoR != null){
+        if (currentAtoR != null) {
             //Check if the Role exists
-            Role testRole = this.myRoleRepo.findById(updateAtoR.getIdRole()).orElse(null);
+            Role testRole = this.myRoleRepo.findById(updateAtoR.getIdRole().getIdRole()).orElse(null);
             if (testRole != null) {
                 //Check if the Access exists
-                Access testAccess = this.myAccessRepo.findById(updateAtoR.getIdAccess()).orElse(null);
+                Access testAccess = this.myAccessRepo.findById(updateAtoR.getIdAccess().getIdAccess()).orElse(null);
                 if (testAccess != null)
-                    return this.setAccessToRole(updateAtoR.getIdRole(), updateAtoR.getIdAccess(), currentAtoR, "update");
+                    return this.setAccessToRole(updateAtoR.getIdRole().getIdRole(), updateAtoR.getIdAccess().getIdAccess(), currentAtoR, "update");
                 else
                     throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The access does not exist");
-            }
-            else
+            } else
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The role does not exist");
+        }
         else
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The access to role does not exist");
-        }
     }
-    /*
+    */
     @PutMapping("{id}/role/{idRole}/access/{idAccess}")
     public AccessToRole update(@PathVariable String id, @PathVariable String idRole, @PathVariable String idAccess){
         AccessToRole currentAtoR = this.myAccessToRoleRepo.findById(id).orElse(null);
@@ -77,7 +76,7 @@ public class AccessToRoleController {
         else
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The access to role does not exist");
     }
-    */
+
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping()
     public void delete(@RequestParam String id){
