@@ -20,7 +20,7 @@ public class RoleController {
     @Autowired
     private RoleRepo myRoleRepo;
 
-    @GetMapping("")
+    @GetMapping()
     public List<Role> index(){ return this.myRoleRepo.findAll(); }
 
     @PostMapping()
@@ -35,12 +35,12 @@ public class RoleController {
 
     @PutMapping()
     public Role update(@RequestBody Role updateRole){
-        Role currentRole=this.myRoleRepo.findById(updateRole.getIdRole()).orElse(null);
         //first, check if the role exists
+        Role currentRole=this.myRoleRepo.findById(updateRole.getIdRole()).orElse(null);
         if (currentRole!=null){
-            //check if the new role name is not used already
+            //check if the new role name is not used already with a different id
             Role test = myRoleRepo.getRoleByName(updateRole.getName());
-            if (test!=null)
+            if (test!=null&!currentRole.getIdRole().equals(updateRole.getIdRole()))
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Role already exists with id "+test.getIdRole());
             else {
                 currentRole.setName(updateRole.getName());
@@ -54,8 +54,8 @@ public class RoleController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping()
-    public void delete(@RequestParam String id){
-        Role currentRole=this.myRoleRepo.findById(id).orElse(null);
+    public void delete(@RequestParam String idRole){
+        Role currentRole=this.myRoleRepo.findById(idRole).orElse(null);
         if (currentRole!=null){
             //avoid to delete the role named "undefined"
             if (currentRole.getName().equals("undefined"))

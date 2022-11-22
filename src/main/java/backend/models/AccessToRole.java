@@ -23,7 +23,7 @@ public class AccessToRole {
         this.idAccess = idAccess;
     }
     //gets
-    public String getId() { return idAtoR; }
+    public String getIdAtoR() { return idAtoR; }
     public Role getIdRole() { return idRole; }
     public Access getIdAccess() { return idAccess; }
 

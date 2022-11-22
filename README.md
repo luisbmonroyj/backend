@@ -7,17 +7,15 @@ This project manages users, roles and access permissions to different url and me
 
 - GET **server/role**: shows all created roles, with name and description
 - DELETE **server/role?idRole=<idRole>**: eliminates role according to its id
-    *There should be a role to which every user with the deleted roled will take as its new role. This one
+    *There should be a role to which every user with the deleted role will take as its new role. This one
     is set to "undefined" and cannot be deleted*
 - PUT **server/role**: a JSON must be sent with the whole data:
   {"idRole": "<idRole>", "name": "Role Name", "description": "Role description"}
-
+  *The name, the description or both can be changed, as long as the name is not already taken
 - POST **server/role**: a JSON must be sent with the following data:
   {"name": "Role Name", "description": "Role description"}
   *idRole is automatically created*
-
-- GET **server/role/<idRole>**: Muestra el role con id = <idRole>, su id, nombre y descripcion
-  
+ 
 ### Managing accesses
 *Access is a collection that gathers all urls and methods for every endpoint
 *The method must be entered in uppercase letters, <METHOD> = {"POST","PUT","PATCH","GET","DELETE"}
@@ -25,7 +23,7 @@ This project manages users, roles and access permissions to different url and me
 - GET **server/access**: shows all created accesses, with url and method
 - DELETE **server/access?idAccess=<idAccess>**: eliminates the access according to its id
 - PUT **server/access**: a JSON must be sent with the whole data:
-  {  "idAccess": "<idAccess>",  "url": "<url>",  "method": "METHOD"  } 
+  {  "idAccess": "<idAccess>",  "url": "<url>",  "method": "<METHOD>"  } 
 - POST **server/access**: a JSON must be sent with the following data:
   { "url":"<url>", "method":"<METHOD>"}
 *idAccess is automatically created*

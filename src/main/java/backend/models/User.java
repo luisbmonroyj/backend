@@ -18,7 +18,9 @@ public class User {
         @DBRef
         private Role idRole;
 
-        public User (String id,String lastname,String name,String email,String address,String phone, String username,String password){
+        public User (String id,String lastname,String name,
+                     String email,String address,String phone,
+                     String username,String password){
                 this.id = id;
                 this.lastname=lastname;
                 this.name=name;
@@ -38,7 +40,7 @@ public class User {
         public String getPhone(){ return this.phone; }
         public String getUsername(){ return this.username; }
         public String getPassword(){ return this.password; }
-        public Role getRole (){ return this.idRole;}
+        public Role getIdRole (){ return this.idRole;}
 
         //sets
         public void setLastname(String lastname){ this.lastname = lastname;}
@@ -48,6 +50,6 @@ public class User {
         public void setPhone(String phone){ this.phone = phone;}
         public void setUsername(String username){ this.username = username;}
         public void setPassword(String password){ this.password = password;}
-        public void setRole(Role idRole) { this.idRole = idRole;}
+        public void setIdRole(Role idRole) { this.idRole = idRole;}
 
 }
