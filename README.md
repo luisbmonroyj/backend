@@ -32,13 +32,15 @@ This project manages users, roles and access permissions to different url and me
 ### Managing access to roles
 *AccessToRole assigns an access (url and method) to a Role, giving permission to do the query
 
-- GET **server/accessToRole**: shows the accesses to every role
 - GET **server/accessToRole/<idAccessToRole>**: shows the information of the specific <idAccessToRole>
 - DELETE **server/accessToRole/<idAccessToRole>**: eliminates the accessToRole according to its id
-  PUT **server/accessToRole/<id>/role/<idRole>/access/<idAccess>**: changes the access for the role   
-- POST **server/accessToRole/<idRole>/access/<idAccess>**: sets an access for a role
-  *idAtoR is automatically created*
   
+- GET **server/accessToRole**: shows the accesses to every role
+- POST **server/accessToRole?idRole=<idRole>&idAccess=<idAccess>**: sets an access for a role
+  *idAtoR is automatically created*
+- PUT **server/accessToRole**: changes the access for the role or viceversa, sending a JSON like this:
+  - {"idAccessToRole":"<idAccessToRole>", "idRole":"<idRole>", "idAccess":"<idAccess>"}
+
 ### Managing users
 
 Users are created with a default role named "undefined".
