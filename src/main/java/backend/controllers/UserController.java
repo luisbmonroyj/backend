@@ -43,19 +43,21 @@ public class UserController {
 
     @PatchMapping()
     public User update(@RequestBody User updateUser){
-        User currentUser=this.myUserRepo.findById(updateUser.getId()).orElse(null);
         //first, check if the user exists
+        User currentUser=this.myUserRepo.findById(updateUser.getId()).orElse(null);
         if (currentUser!=null){
-            //check if the new username is not used already
+            //check if the new username is not used already with a different id
             User test = myUserRepo.getUsername(updateUser.getUsername());
-            if (test!=null)
+            if (test!=null&!(updateUser.getUsername().equals(currentUser.getUsername()))) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already exists");// with id "+test.get_id());
+            }
             else {
                 currentUser.setLastname(updateUser.getLastname());
                 currentUser.setName(updateUser.getName());
                 currentUser.setEmail(updateUser.getEmail());
                 currentUser.setAddress(updateUser.getAddress());
                 currentUser.setPhone(updateUser.getPhone());
+                currentUser.setUsername(updateUser.getUsername());
                 currentUser.setPassword(encryptSHA256(updateUser.getPassword()));
                 return this.myUserRepo.save(currentUser);
             }

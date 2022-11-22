@@ -50,11 +50,11 @@ Users are created with a default role named "undefined".
 
 - GET **server/user**: shows all created users with the encrypted password (SHA256)and the assigned role
 - DELETE **server/user?id=<id>**:  eliminates the user according to its id
+- PUT **server/user?id=<id>&idRole=<idRole>**: changes the role of the user
 - POST & PATCH **server/user**: a JSON must be sent with the whole data:
   {   "id": "<user id>",  "lastname": "<user lastname>",  "name": "<user first name>",
     "email": "<user email>",  "address": "<user address>", "phone": "<user phone number>",
     "username": "<username>",  "password": "<not encrypted password>" }
+  *You can change the username, as long as it's not already taken
+  *id is NOT automatically created*
 
-  *id is not automatically created*
-
-- PUT **server/user/<id>/idRole/<idRole>**: changes the role of the user
